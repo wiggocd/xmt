@@ -6,7 +6,7 @@ It goes without saying: don't run this on a computer or VM with, or connected to
 
 # Build Requirements
 
-- g++ (mingw)
+- `g++` (mingw binaries in path)
 
 # Building
 

