@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "resources.h"
 #include "install.h"
 
 int main(int argc, char** argv) {

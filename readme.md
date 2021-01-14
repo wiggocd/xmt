@@ -8,13 +8,17 @@ It goes without saying: don't run this on a computer or VM with, or connected to
 
 - `g++` (mingw binaries in path)
 
+# Build Required Tools
+
+`.\make.bat tools`
+
 # Building
 
-`make.bat`
+`.\make.bat`
 
 # Testing
 
-Run `bin/xmt.exe` in an isolated VM.
+Copy `bin/xmt.exe` to an isolated VM and run inside the VM.
 
 # Feature Roadmap
 

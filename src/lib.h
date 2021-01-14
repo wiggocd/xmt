@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string>
+#include <cstring>
 #include <vector>
 
 std::vector<std::string> split(const char* str, char ch) {
@@ -40,9 +41,14 @@ std::vector<std::string> split(const char* str, char ch) {
 	return vstrings;
 }
 
-void read(uint8_t* buffer, uint8_t* addr_start, uint8_t size) {
-	for (uint8_t i=0; i<size; i++) {
-		buffer[i] = addr_start[i];
+void write(const char* data, const char* path) {
+	std::ofstream file(path);
+
+	if (file) {
+		file << data;
+		file.close();
+	} else {
+		printf("Error writing file.\n");
 	}
 }
 
