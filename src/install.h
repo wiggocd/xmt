@@ -6,11 +6,11 @@
 #define __INSTALL
 
 #include <stdlib.h>
-#include <fstream>
 #include <windows.h>
-#include <vector>
-#include <sstream>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
 #include "lib.h"
 #include "resources.h"
 
@@ -59,14 +59,23 @@ void install(void) {
 	printf("Error copying executable");
 }
 
-const char* genDeletionScript() {
-	std::vector<std::string> fileNameSplit = split(moduleFileName, '\\');
+const char* basename(const char* path) {
+	std::vector<std::string> fileNameSplit = split(path, '\\');
 	std::string lastSegment = fileNameSplit.back();
-	const char* executable = lastSegment.c_str();
+	const char* basename = lastSegment.c_str();
+
+	const size_t size = sizeof(char)*strlen(basename);
+	char* ret = (char*)malloc(size);
+	memcpy(ret, basename, size);
+	return ret;
+}
+
+const char* genDeletionScript() {
+	const char* exec = basename(moduleFileName);
 
 	std::stringstream script_ss;
 	script_ss 	<< "@echo off\n"
-				<< "set EXEC=" << executable << "\n"
+				<< "set EXEC=" << exec << "\n"
 				<< "set FILENAME=" << moduleFileName << "\n"
 				<< src_scrpt_remove_bat;
 	std::string script_s = script_ss.str();
@@ -103,16 +112,29 @@ void scheduleDeletion(void) {
 	ShellExecuteA(NULL, NULL, EXEC_DROP_PATH, NULL, NULL, 0);
 }
 
-void runCheck(void) {
+void defaultLoop(void) {
+	while (true) {
+		Sleep(loopDelay_ms);
+	}
+}
+
+void defaultRoutine(void) {
 	if (!execInstalled()) {
 		install();
 		scheduleDeletion();
+	} else {
+		defaultLoop();
 	}
 }
 
 void uninstall(void) {
 	printf("Uninstalling...");
 	if (execInstalled()) {
+		std::string params_s("/IM ");
+		params_s.append(basename(EXEC_DROP_PATH));
+		const char* params = params_s.c_str();
+
+		ShellExecuteA(NULL, NULL, "taskkill.exe", params, NULL, 0);
 		DeleteFileA(EXEC_DROP_PATH);
 	}
 }

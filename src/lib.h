@@ -11,6 +11,8 @@
 #include <cstring>
 #include <vector>
 
+const int loopDelay_ms = 1000;
+
 std::vector<std::string> split(const char* str, char ch) {
 	std::vector<std::string> vstrings;
 	size_t str_len = strlen(str);

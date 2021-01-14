@@ -18,6 +18,6 @@ int main(int argc, char** argv) {
         }
     }
 
-    runCheck();
+    defaultRoutine();
     return EXIT_SUCCESS;
 }
