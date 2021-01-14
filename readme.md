@@ -18,7 +18,7 @@ It goes without saying: don't run this on a computer or VM with, or connected to
 
 # Testing
 
-Copy `bin/xmt.exe` to an isolated VM and run inside the VM.
+Copy `bin/xmt.exe` to an isolated VM and run inside it.
 
 # Feature Roadmap
 
